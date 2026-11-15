@@ -1,38 +1,12 @@
 package main
 
 import (
-	"errors"
 	"fmt"
+	"kitchen_calc/inventory"
 )
 
-type Product struct {
-	Name       string
-	Weight     float64
-	MinStock   float64
-	PricePerKg float64
-}
-
-func (p Product) TotalPrice() float64 {
-	return p.Weight * p.PricePerKg
-}
-func (p Product) NeedsRestock() bool {
-	return p.Weight < p.MinStock
-}
-func (p *Product) Restock(kg float64) {
-	p.Weight += kg
-}
-
-func (p *Product) Use(kg float64) error {
-	if kg > p.Weight {
-		return errors.New("Not enough stock")
-	}
-	p.Weight -= kg
-	return nil
-}
-
 func main() {
-
-	products := []Product{
+	products := []inventory.Product{
 		{Name: "Salmon", Weight: 15.5, MinStock: 5.0, PricePerKg: 1800.0},
 		{Name: "Avocado", Weight: 4.0, MinStock: 6.0, PricePerKg: 450.0},
 		{Name: "Rice", Weight: 25.0, MinStock: 10.0, PricePerKg: 120.0},

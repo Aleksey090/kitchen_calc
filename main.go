@@ -2,25 +2,33 @@ package main
 
 import "fmt"
 
+type Product struct {
+	Name       string
+	Weight     float64
+	MinStock   float64
+	PricePerKg float64
+}
+
 func main() {
-	// 1. Создайте map[string]float64 с остатками продуктов
-	stock := map[string]float64{
-		"Salmon":  15.5,
-		"Avocado": 4.0,
-		"Rice":    25.0,
-		"Cheese":  6.5,
+
+	products := []Product{
+		{Name: "Salmon", Weight: 15.5, MinStock: 5.0, PricePerKg: 1800.0},
+		{Name: "Avocado", Weight: 4.0, MinStock: 6.0, PricePerKg: 450.0},
+		{Name: "Rice", Weight: 25.0, MinStock: 10.0, PricePerKg: 120.0},
+		{Name: "Cheese", Weight: 6.5, MinStock: 7.0, PricePerKg: 950.0},
 	}
-	// 2. Заведите переменную для подсчета общего веса (var totalWeight float64)
+
 	var totalWeight float64
-	// 3. Пройдитесь по карте циклом for name, weight := range ...
-	//    - Проверьте, если weight < 5.0 -> выведите предупреждение
-	//    - Прибавьте weight к totalWeight
-	for name, weight := range stock {
-		if weight < 5.0 {
-			fmt.Println("Need to buy:", name)
+	var totalCost float64
+
+	for _, p := range products {
+		if p.Weight < p.MinStock {
+			fmt.Println("Need to buy:", p.Name)
 		}
-		totalWeight += weight
+		totalWeight += p.Weight
+		totalCost += p.Weight * p.PricePerKg
 	}
-	// 4. Выведите итоговый вес всех продуктов
+
 	fmt.Println("Total product weight:", totalWeight)
+	fmt.Println("Total product price:", totalCost)
 }

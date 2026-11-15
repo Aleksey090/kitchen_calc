@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 type Product struct {
 	Name       string
@@ -15,6 +18,17 @@ func (p Product) TotalPrice() float64 {
 func (p Product) NeedsRestock() bool {
 	return p.Weight < p.MinStock
 }
+func (p *Product) Restock(kg float64) {
+	p.Weight += kg
+}
+
+func (p *Product) Use(kg float64) error {
+	if kg > p.Weight {
+		return errors.New("Not enough stock")
+	}
+	p.Weight -= kg
+	return nil
+}
 
 func main() {
 
@@ -27,6 +41,11 @@ func main() {
 
 	var totalWeight float64
 	var totalCost float64
+
+	err := products[0].Use(10.0)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 
 	for _, p := range products {
 		if p.NeedsRestock() {

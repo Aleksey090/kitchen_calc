@@ -9,6 +9,13 @@ type Product struct {
 	PricePerKg float64
 }
 
+func (p Product) TotalPrice() float64 {
+	return p.Weight * p.PricePerKg
+}
+func (p Product) NeedsRestock() bool {
+	return p.Weight < p.MinStock
+}
+
 func main() {
 
 	products := []Product{
@@ -22,11 +29,11 @@ func main() {
 	var totalCost float64
 
 	for _, p := range products {
-		if p.Weight < p.MinStock {
+		if p.NeedsRestock() {
 			fmt.Println("Need to buy:", p.Name)
 		}
 		totalWeight += p.Weight
-		totalCost += p.Weight * p.PricePerKg
+		totalCost += p.TotalPrice()
 	}
 
 	fmt.Println("Total product weight:", totalWeight)
